@@ -1,0 +1,63 @@
+﻿/*
+  code started
+  Coal smart dustbin
+  #define buzzer = D8;
+  #define trigger pin = D5;
+  #define echo pin = D6;
+  #define servo pin = D9;
+ */
+
+#include <Servo.h>
+
+
+Servo servo1;
+const int buzzer=8;
+int trig=5;
+int echo=6;
+int servo1_pin=9;
+int duration=0,dist=0;
+
+
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(buzzer,OUTPUT);
+  pinMode(trig,OUTPUT);
+  pinMode(echo,INPUT);
+  servo1.attach(servo1_pin);
+  servo1.write(90);
+}
+
+ 
+
+ 
+
+void loop()
+{
+
+    tone(4, 440);
+    delay(100);
+    digitalWrite(trig, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trig, LOW);
+    pinMode(echo, INPUT);
+    duration = pulseIn(echo, HIGH);
+    
+    dist = (duration*0.034) / 2; //obtain distance
+
+    if(dist<20)
+    {
+      Serial.println("Dustbin Open");
+      digitalWrite(buzzer ,HIGH);
+      servo1.write(90);
+      delay(5000);
+    }
+    else
+    {
+      Serial.println(" Closed");
+      digitalWrite(buzzer, LOW);
+      servo1.write(0);
+      delay(1000);
+    }
+}
